@@ -127,7 +127,7 @@ void qsort_mt(void *a,
         goto f1;
     errno = 0;
     /* Try to initialize the resources we need. */
-    if (pthread_mutex_init(&c.mtx_al, NULL) != 0)
+    if (pthread_mutex_init(&c.mtx_al, NULL) != 0) // if already init
         goto f1;
     if ((c.pool = calloc(maxthreads, sizeof(struct qsort))) == NULL)
         goto f2;
@@ -341,7 +341,7 @@ again:
     /* Wait for work to be allocated. */
     verify(pthread_mutex_lock(&qs->mtx_st));
     while (qs->st == ts_idle)
-        verify(HHHH);
+        verify(pthread_cond_wait(&qs->cond_st, &qs->mtx_st)); // HHHH
     verify(pthread_mutex_unlock(&qs->mtx_st));
     if (qs->st == ts_term) {
         return NULL;
@@ -360,7 +360,7 @@ again:
                 continue;
             verify(pthread_mutex_lock(&qs2->mtx_st));
             qs2->st = ts_term;
-            verify(JJJJ);
+            verify(pthread_cond_signal(&qs2->cond_st));     // JJJJ
             verify(pthread_mutex_unlock(&qs2->mtx_st));
         }
         verify(pthread_mutex_unlock(&c->mtx_al));
