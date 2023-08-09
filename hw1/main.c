@@ -144,7 +144,6 @@ static inline void st_update(struct st_node **root, struct st_node *n)
 
     int b = st_balance(n);
     int prev_hint = n->hint;
-    struct st_node *p = st_parent(n);
 
     if (b < -1) {
         /* leaning to the right */
@@ -166,7 +165,7 @@ static inline void st_update(struct st_node **root, struct st_node *n)
 
     n->hint = st_max_hint(n);
     if (n->hint == 0 || n->hint != prev_hint)
-        st_update(root, p);
+        st_update(root, st_parent(n));
 }
 
 /* The process of insertion is straightforward and follows the standard approach
