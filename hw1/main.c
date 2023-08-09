@@ -148,7 +148,8 @@ static inline void st_update(struct st_node **root, struct st_node *n)
 
     if (b < -1) {
         /* leaning to the right */
-        printf("QQ");
+        if (st_left(st_right(n)))
+            st_rotate_left(st_right(n));
         if (n == *root)
             *root = st_right(n);
         st_rotate_right(n);
@@ -156,17 +157,16 @@ static inline void st_update(struct st_node **root, struct st_node *n)
 
     else if (b > 1) {
         /* leaning to the left */
-        printf("TT");
+        if (st_right(st_left(n))) 
+            st_rotate_right(st_left(n));
         if (n == *root)
             *root = st_left(n);
         st_rotate_left(n);
     }
 
     n->hint = st_max_hint(n);
-    if (n->hint == 0 || n->hint != prev_hint){
-        printf("hint:%d, prevh:%d\n ",n->hint, prev_hint);
+    if (n->hint == 0 || n->hint != prev_hint)
         st_update(root, p);
-}
 }
 
 /* The process of insertion is straightforward and follows the standard approach
@@ -465,7 +465,9 @@ int main()
     prettyPrintTree(st_root(tree),"",true);
     treeint_insert(900);
     prettyPrintTree(st_root(tree),"",true);
-    //treeint_insert(800);
+    treeint_insert(800);
+    prettyPrintTree(st_root(tree),"",true);
+    treeint_insert(700);
 
     printf("[ After insertions ]\n");
     treeint_dump();
