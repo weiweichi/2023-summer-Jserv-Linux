@@ -284,8 +284,8 @@ void st_remove(struct st_node **root, struct st_node *del)
         if (del == *root)
             *root = least;
 
-        st_replace_right(del, least);   // AAAA
-        st_update(&least, least);       // BBBB
+        st_replace_right(del, least);       // AAAA
+        st_update(root, st_right(least));   // BBBB
         return;
     }
 
@@ -294,8 +294,8 @@ void st_remove(struct st_node **root, struct st_node *del)
         if (del == *root)
             *root = most;
 
-        st_replace_left(del, most);     // CCCC
-        st_update(&most, most);         // DDDD
+        st_replace_left(del, most);         // CCCC
+        st_update(root, st_left(most));     // DDDD
         return;
     }
 
@@ -481,6 +481,12 @@ int main()
     // treeint_insert(800);
     // prettyPrintTree(st_root(tree),"",true);
     // treeint_insert(700);
+    // prettyPrintTree(st_root(tree),"",true);
+    // treeint_insert(600);
+    // prettyPrintTree(st_root(tree),"",true);
+    // treeint_insert(500);
+    // prettyPrintTree(st_root(tree),"",true);
+    // treeint_insert(400);
 
     printf("[ After insertions ]\n");
     // treeint_dump();
